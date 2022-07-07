@@ -9,6 +9,12 @@ from datetime import datetime
 from werkzeug.urls import url_parse
 from app.oauth import OAuthSignIn
 
+import os
+from dotenv import load_dotenv
+
+#basedir = os.path.join(os.path.dirname(__file__))
+load_dotenv()
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('SQLALCHEMY_DATABASE_URI')
 
 @app.route('/')
 @app.route('/index')
@@ -105,13 +111,22 @@ def oauth_callback(provider):
     if not current_user.is_anonymous:
         return redirect(url_for('index'))
     oauth = OAuthSignIn.get_provider(provider)
-    social_id, username, email = oauth.callback()
+    me, social_id, username, email = oauth.callback()
+    if(me):
+        print(me)
+    if(social_id):
+        print("social_id:" +social_id)
+    if(username):
+        print("username:" + username)
+    if(email):
+        print("email:" + email)
+    #print("oauth.callback():"+oauth.callback())
     if social_id is None:
         flash('Authentication failed')
         return redirect(url_for(index))
     user = User.query.filter_by(social_id=social_id).first()
     if not user:
-        user = User(social_id=social_id, nickname=username, email=email)
+        user = User(social_id=social_id, nickname=social_id, email=email, username=social_id)
         db.session.add(user)
         db.session.commit()
     login_user(user, True)

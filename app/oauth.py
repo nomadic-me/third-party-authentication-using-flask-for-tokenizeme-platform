@@ -28,8 +28,15 @@ class OAuthSignIn(object):
         if self.providers is None:
             self.providers = {}
             for provider_class in self.__subclasses__():
-                provider = provider_class()
-                self.providers[provider.provider_name] = provider
+                try:
+                    provider = provider_class()
+                except KeyError:
+                    pass  # unsupported provider
+                else:
+                    self.providers[provider.provider_name] = provider
+            #for provider_class in self.__subclasses__():
+            #    provider = provider_class()
+            #   self.providers[provider.provider_name] = provider
         return self.providers[provider_name]
 
 
@@ -106,4 +113,4 @@ class TwitterSignIn(OAuthSignIn):
         me = oauth_session.get('account/verify_credentials.json').json()
         social_id = 'twitter$' + str(me.get('id'))
         username = me.get('screen_name')
-        return social_id, username, None   # Twitter does not provide email
+        return me, social_id, username, None   # Twitter does not provide email
