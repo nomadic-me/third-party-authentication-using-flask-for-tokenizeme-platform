@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+{% import 'bootstrap/wtf.html' as wtf %}
+
+{% block app_content %}
+    <!-- Title -->
+    <div class="row text-center">
+        <div class="col-md-4">
+            <!-- Empty div -->
+         </div>
+        <div class="col-md-4">
+            <h1>Log In</h1><hr>
+         </div>
+         <div class="col-md-4">
+            <!-- Empty div -->
+         </div>           
+    </div>
+    <!-- End of Title -->
+
+    <!-- Social Logins -->
+    <div class="row">
+        <div class="col-md-4">
+            <!-- Empty col -->
+        </div>
+        <div class="col-md-4">
+            <div class="row text-center">
+                <div class="col-md-12">
+                    <a href="{{ url_for('oauth_authorize', provider='facebook') }}">                        
+                        <img class="img-fluid" style="max-width: 100%; height: auto;" alt="Facebook" src="https://img.shields.io/badge/Login With Facebook%20-%231877F2.svg?&style=for-the-badge&logo=Facebook&logoColor=white"/>
+                    </a>
+                </div>
+            </div><br>
+            <div class="row text-center">
+                <div class="col-md-12">
+                    <a href="{{ url_for('oauth_authorize', provider='twitter') }}">
+                        <img class="img-fluid" style="max-width: 100%; height: auto;" alt="Twitter" src="https://img.shields.io/badge/Login  With  Twitter%20-%231DA1F2.svg?&style=for-the-badge&logo=Twitter&logoColor=white"/>                        
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <!-- Empty col -->
+        </div>
+    </div>
+    <!-- End of Social Logins -->
+
+{% endblock %}
